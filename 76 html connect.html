@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ฟอร์มส่งข้อมูล</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #f4f7f9;
+      padding: 30px;
+    }
+    .form-container {
+      background: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #007acc;
+    }
+    label {
+      font-weight: 500;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #d327ca;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f99;
+    }
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>ฟอร์มส่งข้อมูล</h2>
+    <form id="myForm">
+      <label>ชื่อของคุณ:</label>
+      <input type="text" name="name" required>
+
+      <label>ข้อความ:</label>
+      <textarea name="message" rows="4" required></textarea>
+
+      <button type="submit">ส่งข้อมูล</button>
+    </form>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("myForm");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const params = new URLSearchParams(formData).toString();
+
+      fetch("https://script.google.com/macros/s/AKfycbw9hDJ_w-F9XN7WuRC4qvE6C7jXmaWw2Kv0aWJFQrziDEVufo0Kc7ZUP6oZgLGLVauLOQ/exec" + params)
+        .then(res => res.text())
+        .then(text => {
+          status.textContent = "✅ ส่งข้อมูลสำเร็จแล้ว!";
+          form.reset();
+        })
+        .catch(err => {
+          status.textContent = "❌ มีข้อผิดพลาด: " + err;
+        });
+    });
+  </script>
+</body>
+</html>
